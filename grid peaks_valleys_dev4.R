@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------------------------------------------------
-#--------------------------------------- Detection of wave-max along the profile --------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
+#--------------------------------------- Detection of peaks and valleys along intensity profiles  -----------------------
+#------------------------------------------------------------------------------------------------------------------------
 
 #detection of peaks and valleys along profiles
 
@@ -8,15 +8,6 @@
 #Author: Annalisa Bellandi, Faulkner group
 
 #----------------------------------------------------------------------------------------------------------------------
-#new library 
-myPaths <- .libPaths()
-
-myPaths <- c(myPaths, "C:/Users/bellanda/Desktop/RlibraryAnnalisa")
-
-.libPaths(myPaths)  # add new path
-
-myPaths <- c(myPaths[3], myPaths[2], myPaths[1])  # switch them
-.libPaths(myPaths)
 
 #packages needed
 library('rlang')
@@ -83,21 +74,18 @@ my_colors_plot
 ##------------------------------------------ defining FUNCTIONS --------------------------------------------------------------
 ##------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-########################### FUNCTIONS definition
-
 #Function 1
 
 find_peaks_and_Valleys <- function(x, y, w, span, treshold) {
   
-  
   require(zoo)
   n <- length(y)
   
+  #fits a loess curve on the data using the given span
   y_smooth <- loess(y ~ x, span=span)$fitted
   
+  #finds all local maxima and minima along the loess curve, this uses a rolling window approach. In practice data are divided in windows of width w, within each window 
+  #the max and min are calculated. Then the max and min values are allocated to the position corresponding to the centre of the window.
   y_max <- rollapply(zoo(y_smooth), 2*w+1, max, align="center")
   y_min <- rollapply(zoo(y_smooth), 2*w+1, min, align="center")
   
@@ -113,12 +101,12 @@ find_peaks_and_Valleys <- function(x, y, w, span, treshold) {
   #only the real local maxima (see graphic rapresentation to understand it)
   delta <- y_max - y_smooth_trimmed
   
-  
   #the indexes of our max values now refer to the indexes of the y_max, but we want to bring them back to the indexes of our original 
   #dataset (y_smooth) so that we can fish out the correct distance from the centre that corresponds to each max, so we add w. 
   index_max_all <- which(delta <= 0) + w
   index_max_all
   
+  #and we do the same with the minima
   delta_min <- y_min - y_smooth_trimmed
   index_min_all <- which(delta_min >= 0) + w
   index_min_all
@@ -134,11 +122,10 @@ find_peaks_and_Valleys <- function(x, y, w, span, treshold) {
   max_values_all
   min_values_all
   
-  #now some peaks are detected even if they could be condired just noise
-  #peaks that are actually noise would be very thin - so the distance between them and the two neighbouring valleys is less than x, not sure how to implement this quickly...
-  #or could be having an intensity that is no high enough compared to the valleys. How high is high enouhg? Maybe the average SD of the real dataset from the ysmooth
-  avgres <- sum(abs(y-y_smooth))/length(y) #average residuals between data and fitted loess
-  SDsample <- sqrt(sum((abs(y-y_smooth))^2)/length(y)) #SD of the data compared to the fitted loeass in this transect
+  #now some peaks are detected even if they could be considered just noise
+  #peaks that are actually noise could be having an intensity that is not high enough compared to the valleys. How high is high enouhg? Maybe the average SD of the real dataset from the ysmooth
+  avgres <- sum(abs(y-y_smooth))/length(y) 
+  SDsample <- sqrt(sum((abs(y-y_smooth))^2)/length(y)) #Root mean square error (RMSE, a measure of average residuals between data and fitted loess, so a measure of how spread data are)
   
   p <- (max_values_all$index_num)
   
@@ -252,7 +239,7 @@ find_peaks_and_Valleys <- function(x, y, w, span, treshold) {
       #if both valleys exist
       valleys_int <- (right_valley$intensity + left_valley$intensity)/2
       rel_peakint <- peak$intensity - valleys_int
-      #peak_w_total?
+     
       peak_wc_total <- peak_wc_left + peak_wc_right
       peak_Wv_total <- peak_wv_left + peak_wv_right
       #avg slope of peak
@@ -417,18 +404,14 @@ quick_plot <- function(grid_line_info, x, y, g, s) {
 }
 
 
+###==========================================================================================================
+##============================================= Function definition finished =================================
 
-###################################### to run
+##------------------------------------------things to adjust for each experiment
 
-####### set before starting
+EXP <- "...."
 
-
-
-## things to adjust for each experiment
-
-EXP <- "exp 2_analysis 3"
-
-experiment_folder <- "//nbi-cfs2/shared/Research-Groups/Christine-Faulkner/Annalisa/dye loading/dye loading emma style/results exp 2/analysis 3"
+experiment_folder <- "......"
 
 
 treatments <- c('est','mock')
@@ -436,13 +419,14 @@ treatments <- c('est','mock')
 
 list.files(pattern = "\\.csv$") 
 ##to list all csv files
+#make sure each folder has a start_data excel file with two columns ('treatment' and 'sample_name')
 
 #---------Things to adjust only if necessary: decide the optimal spans, window width and treshold
 w=25
 span=0.1
-treshold=2
+treshold=2 #the higher this number the more peaks you will discard beacuse too low
 
-#---------loops that run on all folders on all plants on all data points
+#---------loops that run on all folders on all plants
 
 #set wd to experiment folder
 setwd(experiment_folder)
