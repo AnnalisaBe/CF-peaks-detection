@@ -419,7 +419,7 @@ treatments <- c('est','mock')
 
 list.files(pattern = "\\.csv$") 
 ##to list all csv files
-#make sure each folder has a start_data excel file with two columns ('treatment' and 'sample_name')
+#make sure each folder has a start_data excel file with three columns ('treatment', 'sample_name', 'relative leaf')
 
 #---------Things to adjust only if necessary: decide the optimal spans, window width and treshold
 w=25
