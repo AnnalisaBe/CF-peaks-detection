@@ -35,10 +35,6 @@ print("Current image pixel width = " + pixelWidth + " " + unit +".");
 pxw = pixelWidth;
 print(pxw);
 
-
-//inspired from https://github.com/sufyanshk/imagej/blob/master/GridPlot.txt
-
-   //{
    widthlines = 50/pxw;
    nLines = 50;
    width = getWidth;
@@ -52,35 +48,22 @@ print(pxw);
    for (v=0; v<=nLines-1; v++){ //vertial lines
       makeLine(xoff, 1, xoff, height-1, widthlines);
    	profile = getProfile();
-    //Overlay.addSelection("yellow", widthlines);
     roiManager("add");
 
   for(j=0; j<profile.length; j++){
   		setResult(v, j, profile[j]);
         setResult("d", j, j*pxw);        
         }
-  //roiManager("Select", v);
-  //roiManager("Multi Plot");
-  //wait(200);
-  //close();
-  //run("Add Selection...", "stroke="+color);
-      xoff += tileWidth;
    }
    
    for (h=nLines; h<=(2*nLines); h++){ //horizontal lines
       makeLine(1, yoff, width-1, yoff, widthlines);
-  //Overlay.addSelection("yellow", widthlines);
   profile = getProfile();
   roiManager("add");
-  //roiManager("Select", nLines-1+h);
   for(j=0; j<profile.length; j++){
     	 setResult(h, j, profile[j]);
     	 setResult("d", j, j*pxw);        
         }
-  //roiManager("Select", h);
-  //roiManager("Multi Plot");
-  //wait(200);
-  //close();
         
   yoff += tileHeight;
    }
@@ -92,7 +75,6 @@ saveAs("Results", dir + title_without_extension + ".csv");
 print(title_without_extension, " - all done");
 close();
 close();
-
 		}
 		
 //saves ROIs		
