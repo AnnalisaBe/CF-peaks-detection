@@ -415,12 +415,13 @@ EXP <- "...."
 experiment_folder <- "......"
 
 
-treatments <- c('est','mock')
+treatments <- c('...','...') #insert here the names of the folders, one folder per each treatment
 
 
 list.files(pattern = "\\.csv$") 
-##to list all csv files
-#make sure each folder has a start_data excel file with three columns ('treatment', 'sample_name', 'relative leaf')
+# to list all csv files
+# Make sure each folder has a start_data excel file with three columns ('treatment', 'sample_name', 'relative leaf')
+# In the colum 'sample_name', add all the .csv files name output of the fiji macro
 
 #---------Things to adjust only if necessary: decide the optimal spans, window width and treshold
 w=25
