@@ -1,13 +1,15 @@
-
+#packages needed
 library(ggsignif)
 
 
+#From the output of the R script grid_peak_valleys_analysis 
 #copy valleys df from excel file
 df_valleys <- read.table('clipboard', sep = '\t', header=TRUE)
 
 head(df_valleys)
 tail(df_valleys)
 
+df_valleys$relative_leaf <- factor(df_valleys$relative_leaf)
 
 
 #copy peaks df from excel file
