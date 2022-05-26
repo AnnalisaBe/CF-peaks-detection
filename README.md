@@ -6,7 +6,7 @@ These scripts allow for scanning images along a grid of 100 lines (50 vertical a
 - peaks width
 - peaks slope
 
-These analysis is divided in two parts:
+The analysis is divided in two parts:
 -PART1, a Fiji macro
 -PART2, an R script
 
