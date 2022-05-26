@@ -3,6 +3,7 @@
 #------------------------------------------------------------------------------------------------------------------------
 
 #detection of peaks and valleys along profiles
+#works on the output .csv files of the Fiji macro scanning_grid
 
 #Date: 29/04/2022
 #Author: Annalisa Bellandi, Faulkner group
