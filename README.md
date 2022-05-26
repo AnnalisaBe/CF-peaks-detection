@@ -7,7 +7,7 @@ These scripts allow for scanning images along a grid of 100 lines (50 vertical a
 - peaks slope
 
 The analysis is divided in two parts:
--PART1, a Fiji macro
--PART2, an R script
+- PART1, a Fiji macro
+- PART2, a R script
 
 These tools have been developed for analysis of one-channel and one-slice fluorescence microscopy images, to quantify the spread of CF from the vasculature in leaves.
